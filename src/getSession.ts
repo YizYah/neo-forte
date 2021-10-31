@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-non-null-assertion */
+
 import { DatabaseInfo } from "./types/DatabaseInfo"
 
 const neo4j = require('neo4j-driver')
