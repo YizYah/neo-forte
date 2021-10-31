@@ -13,7 +13,9 @@
     "lint": "eslint \"src/**/*.ts\"",
     "lintfix": "eslint \"src/**/*.ts\" --fix",
     "prepack": "rm -rf lib && tsc -b",
-    "test": "ava"
+    "report": "nyc report --reporter=json",
+    "test": "ava",
+    "view-coverage": "nyc --extension .ts ava --forbid-only"
   },
   "engines": {
     "node": ">=8.0.0"

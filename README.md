@@ -4,7 +4,8 @@ A simple querying interface for a neo4j database, requiring only knowledge of cy
 
 ![neo-forte](./images/neo-forte.gif)
 
-[![codecov](https://codecov.io/gh/YizYah/neo-forte/branch/main/graph/badge.svg?token=019QO4XK1Z)](https://codecov.io/gh/YizYah/neo-forgery)
+
+[![codecov](https://codecov.io/gh/YizYah/neo-forte/branch/main/graph/badge.svg?token=NNHiLaLnlK)](https://codecov.io/gh/YizYah/neo-forte)
 
 ## Why
 
