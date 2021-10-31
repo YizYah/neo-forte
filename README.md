@@ -4,6 +4,7 @@ A simple querying interface for a neo4j database, requiring only knowledge of cy
 
 ![](../images/neo-forte.gif)
 
+[![codecov](https://codecov.io/gh/YizYah/neo-forte/branch/main/graph/badge.svg?token=019QO4XK1Z)](https://codecov.io/gh/YizYah/neo-forgery)
 ## Why
 
 Using neo4j in js should be as simple as it is in the data browser.
