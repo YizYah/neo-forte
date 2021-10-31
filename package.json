@@ -2,7 +2,9 @@
   "name": "neo-forte",
   "version": "1.0.0",
   "description": "a simple querying interface for a neo4j database",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": "YizYah/neo-forte",
   "scripts": {
     "build": "tsc",
     "commit": "git-cz",
@@ -13,9 +15,22 @@
     "prepack": "rm -rf lib && tsc -b",
     "test": "ava"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "keywords": [
+    "neo4j",
+    "neo-forgery",
+    "neo4j-driver",
+    "query",
+    "run",
+    "graph"
+  ],
+  "author": "YizYah",
+  "license": "MIT",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
