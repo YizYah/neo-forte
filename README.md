@@ -2,9 +2,10 @@
 
 A simple querying interface for a neo4j database, requiring only knowledge of cypher.
 
-![](../images/neo-forte.gif)
+![neo-forte](./images/neo-forte.gif)
 
 [![codecov](https://codecov.io/gh/YizYah/neo-forte/branch/main/graph/badge.svg?token=019QO4XK1Z)](https://codecov.io/gh/YizYah/neo-forgery)
+
 ## Why
 
 Using neo4j in js should be as simple as it is in the data browser.
@@ -29,9 +30,8 @@ npm i neo-forte
 * DB_USER
 * DB_PASSWORD
 
-
 You use those in the data browser:
-  ![](../images/loginToDataBrowser.png)
+  ![sample browser login session](./images/loginToDataBrowser.png)
 
 See the `.env.sample` file for an example.
 
@@ -71,7 +71,6 @@ This package fundamentally does two things:
 1. Creates a session
 2. Runs queries
 
-
 ### Session Creation
 
 You have to be able to generate a session with your database.  As suggested above, the simplest approach is to store these variables in your `.env` file:
@@ -86,7 +85,7 @@ But you can also generate them for as many databases as you'd like.
 
 The following enumeration is exposed for your use:
 
-```
+```typescript
 interface DatabaseInfo {
   URI: string;
   USER: string;
@@ -101,7 +100,7 @@ This is passed as parameter to `getSession()`. See the sample usage below.
 
 An async function returning a session:
 
-```
+```typescript
 async function getSession(databaseInfo?: DatabaseInfo)
 ```
 
@@ -146,7 +145,8 @@ const databaseInfo:DatabaseInfo = {
 #### run
 
 The main function is:
-```
+
+```typescript
 async function run(
     session: Session,
     queryString: string,
@@ -163,7 +163,8 @@ If your query fails to execute, you will receive a clear error message, indicati
 #### oneRecord
 
 A second function, just for convenience, is:
-```
+
+```typescript
 export async function oneRecord(
     session: Session,
     queryString: string,
@@ -173,7 +174,6 @@ export async function oneRecord(
 One record returns an object with the requested fields.  If more than one record is returned, `oneRecord` will return an error message.
 
 If no records are returned, `oneRecord` returns null.
-
 
 ## Limitations
 
