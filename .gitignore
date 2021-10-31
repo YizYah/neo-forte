@@ -1,0 +1,8 @@
+/.nyc_output
+/dist
+/lib
+node_modules
+.env
+
+.idea
+.vscode
