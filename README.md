@@ -192,9 +192,11 @@ There are many use cases where you'll be best served to call the [neo4j driver](
 
 ## Relevant Package and Contributing
 
-This package actually uses [neo-forgery](https://www.npmjs.com/package/neo-forgery), and the two complement each other well. The goal of `neo-forgery` is to allow you to run unit tests by mocking the `neo4j-driver` easily.
+This package actually uses [neo-forgery](https://www.npmjs.com/package/neo-forgery).  The two complement each other well. The goal of `neo-forgery` is to allow you to run unit tests by mocking the `neo4j-driver` easily.
 
-Both are part of the same mission.  Programming with neo4j<a href="#note1" id="note1ref"><sup>2</sup></a> in node or js should be extremely simple. If you share that vision :thumbsup:, please reach out with issues, or feel free to jump in and contribute!
+Both are part of the same mission.  Programming with neo4j<a href="#note1" id="note1ref"><sup>2</sup></a> in node or js should be extremely simple. 
+
+If you share that vision :thumbsup:, please reach out with issues, or feel free to jump in and contribute!
 
 ---
 
