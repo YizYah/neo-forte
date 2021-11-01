@@ -182,7 +182,7 @@ export async function oneRecord(
     params: any)
 ```
 
-One record returns an object with the requested fields.  If more than one record is returned, `oneRecord` will return an error message.
+`oneRecord` returns an object with the requested fields.  If more than one record is returned, `oneRecord` will return an error message.
 
 If no records are returned, `oneRecord` returns null.
 
