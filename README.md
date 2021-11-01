@@ -156,7 +156,7 @@ async function run(
 
 It returns an array of objects. Simply have your query return the exact properties or values that you need, and they will appear as fields.
 
-> **_NOTE_** For best results, have your query return specific needed fields or values rather than nodes. You can also return nodes, but to get to their fields you'll need to access their `properties`.
+> **_NOTE_** For best results, have your query return specific needed fields or values rather than nodes. You can also return nodes, which will be stored as objects. But to get to their fields, you'll need to access their `properties`.
 
 If your query fails to execute, you will receive a clear error message, indicating the specific query and parameters that failed, and what the error was.  For instance:
 
