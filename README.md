@@ -102,10 +102,10 @@ An async function returning a session:
 async function getSession(databaseInfo?: DatabaseInfo)
 ```
 
-Takes an optional [DatabaseInfo](#databaseinfo-type) as its only parameter. If no value is passed for `databaseInfo`:
+Takes an optional [DatabaseInfo](#databaseinfo-type) as its only parameter. If no value is passed for `databaseInfo`, here is what getSession does:
 
-1. If there are `process.env` variables, then they are used by default.
-2. If not, `getSession()` throws an error.
+1. If there are `process.env` variables, then they are used by default and a session is returned;
+2. If not, an error is thrown.
 
 Here's a sample usage relying upon the `.env` file to provide the needed database info:
 
