@@ -41,7 +41,7 @@ You can just copy over the `.env.sample` file to `.env` and update the values th
 * _**run**_ runs a query with params in a session.  Returns an array of objects containing your data.
 * _**oneRecord**_ a special variation of `run()` that expects a single result and returns an object rather than an array.
 
-You can then use the results directly in your code.  For example:
+You can then access the results directly in your code.  For example:
 
 ```typescript
 import { getSession, run }  from 'neo-forte'
