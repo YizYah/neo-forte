@@ -79,7 +79,7 @@ As suggested above, the simplest approach is to store these variables in your `.
 * DB_USER,
 * DB_PASSWORD
 
-But you can also generate them for as many databases as you'd like.
+But you can also generate sessions for as other databases as needed.
 
 #### DatabaseInfo type
 
