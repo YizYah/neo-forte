@@ -8,7 +8,7 @@ A simple querying interface for a neo4j database, requiring only knowledge of cy
 
 ## Why
 
-Using neo4j<a href="#note1" id="note1ref"><sup>1</sup></a> in js should be *just as simple* as using the data browser!
+Using neo4j<a href="#note1" id="note1ref"><sup>1</sup></a> in js should be *just as simple* as using the data browser! :thumbsup:
 
 ---
 
@@ -194,8 +194,12 @@ If no records are returned, `oneRecord` returns null.
 
 There are many use cases where you'll be best served to learn about the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme). `neo-forte` just runs a simple query, but if you want to work with transactions, subscriptions, fancy async processing, or very large numbers, you should use the driver.  It's complex for a reason--it's very versatile.
 
-## Relevant Package
+## Relevant Package and Contributing
 
 This package actually uses [neo-forgery](https://www.npmjs.com/package/neo-forgery), and the two complement each other well. The goal of `neo-forgery` is to allow you to run unit tests by mocking the `neo4j-driver` easily.
 
-Both are part of a mission to make programming with neo4j extremely simple. If you share that vision, please reach out with issues, or feel free to jump in and contribute!
+Both are part of a mission to make programming with neo4j<a href="#note1" id="note1ref"><sup>2</sup></a> in node or js extremely simple. If you share that vision, please reach out with issues, or feel free to jump in and contribute!
+
+---
+
+<a id="note1" href="#note1ref"><sup>2</sup></a> Or anything.
