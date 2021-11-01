@@ -8,11 +8,7 @@ A simple querying interface for a neo4j database, requiring only knowledge of cy
 
 ## Why
 
-Using neo4j<a href="#note1" id="note1ref"><sup>1</sup></a> in js should be *just as simple* as using the data browser! :thumbsup:
-
----
-
-<a id="note1" href="#note1ref"><sup>1</sup></a> Actually, *everything* should be that simple in your code. I just happen to be using neo4j.  So I made this package!
+Running cypher in js should be *just as simple* as in the data browser!
 
 ## What
 
