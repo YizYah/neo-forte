@@ -194,7 +194,7 @@ There are many use cases where you'll be best served to call the [neo4j driver](
 
 This package actually uses [neo-forgery](https://www.npmjs.com/package/neo-forgery).  The two complement each other well. The goal of `neo-forgery` is to allow you to run unit tests by mocking the `neo4j-driver` easily.
 
-Both are part of the same mission.  Programming with neo4j<a href="#note1" id="note1ref"><sup>2</sup></a> in node or js should be extremely simple. 
+Both are part of the same mission.  Programming with neo4j<a href="#note1" id="note1ref"><sup>2</sup></a> in node or js should be extremely simple.
 
 
  ## Contributing
