@@ -75,6 +75,8 @@ test('oneRecord throws error from faulty session', async t => {
 
   })
 
+  console.log(error.message)
+
   t.regex(error.message, /problem calling the query/);
 })
 

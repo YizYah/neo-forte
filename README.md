@@ -4,22 +4,25 @@ A simple querying interface for a neo4j database, requiring only knowledge of cy
 
 ![neo-forte](./images/neo-forte.gif)
 
-
 [![codecov](https://codecov.io/gh/YizYah/neo-forte/branch/main/graph/badge.svg?token=NNHiLaLnlK)](https://codecov.io/gh/YizYah/neo-forte)
 
 ## Why
 
-Using neo4j in js should be as simple as it is in the data browser.
+Using neo4j<a href="#note1" id="note1ref"><sup>1</sup></a> in js should be *just as simple* as using the data browser! :thumbsup:
+
+---
+
+<a id="note1" href="#note1ref"><sup>1</sup></a> Actually, *everything* should be that simple in your code. I just happen to be using neo4j.  So I made this package!
 
 ## What
 
-A few functions that allow anyone who can use cypher in the neo4j browser to run them in js code, without a learning curve.
+A few functions that allow anyone who knows cypher to run a query.
 
-It may not be sufficient for everything you'll ever need to do (see [Limitations](#limitations)).  But it lets you start without having to learn about the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme).
+It may not be sufficient for everything you'll ever need to do (see [Limitations](#limitations)).  But you can at least get started without studying the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme).
 
 ## Usage
 
-[1] Import the package:
+[1] Install the package:
 
 ```bash
 npm i neo-forte
@@ -31,15 +34,15 @@ npm i neo-forte
 * DB_USER
 * DB_PASSWORD
 
-You use those in the data browser:
-  ![sample browser login session](./images/loginToDataBrowser.png)
+Those are the credentials that you use to log into the data browser:
+  ![sample browser login session](images/neo4jBrowserLogin.jpg)
 
-See the `.env.sample` file for an example.
+You can just copy over the `.env.sample` file to `.env` and update the values there.
 
 [3] Use the following functions, all defined in API below:
 
 * _**getSession**_ returns a database session.
-* _**run**_ runs a query with given params in a session.  Returns an array of objects containing your data.
+* _**run**_ runs a query with params in a session.  Returns an array of objects containing your data.
 * _**oneRecord**_ a special variation of `run()` that expects a single result and returns an object rather than an array.
 
 You can then use the results directly in your code.  For example:
@@ -74,7 +77,7 @@ This package fundamentally does two things:
 
 ### Session Creation
 
-You have to be able to generate a session with your database.  As suggested above, the simplest approach is to store these variables in your `.env` file:
+As suggested above, the simplest approach is to store these variables in your `.env` file:
 
 * DB_URI,
 * DB_USER,
@@ -84,7 +87,7 @@ But you can also generate them for as many databases as you'd like.
 
 #### DatabaseInfo type
 
-The following enumeration is exposed for your use:
+The following type is exposed for your use:
 
 ```typescript
 interface DatabaseInfo {
@@ -94,8 +97,6 @@ interface DatabaseInfo {
   DATABASE?: string;
 }
 ```
-
-This is passed as parameter to `getSession()`. See the sample usage below.
 
 #### getSession()
 
@@ -107,8 +108,8 @@ async function getSession(databaseInfo?: DatabaseInfo)
 
 Takes an optional [DatabaseInfo](#databaseinfo-type) as its only parameter. If no value is passed for `databaseInfo`:
 
-1. If there are process.env variables, they are used.
-2. If not, you get an error.
+1. If there are `process.env` variables, then they are used by default.
+2. If not, `getSession()` throws an error.
 
 Here's a sample usage relying upon the `.env` file to provide the needed database info:
 
@@ -129,7 +130,7 @@ import {DatabaseInfo, getSession} from 'neo-forte'
 const databaseInfo:DatabaseInfo = {
   URI: 'neo4j+s://73ab4d76.databases.neo4j.io,
   USER: 'neo4j',
-  PASSWORD: '7BxrLxO8A3ffeldrbcedl2KJJK2Hyt08vPJ3lPQe60F',
+  PASSWORD: '7BxrLxO8Arbce3ffelddl2KJJK2Hyt08vPJ3lPQe60F',
 }
 
 (async ()=> {
@@ -142,6 +143,8 @@ const databaseInfo:DatabaseInfo = {
 > **_NOTE_**: `getSession()` will also check the validity of your connection.  If the test fails, you will receive an error.
 
 ### Running Queries
+
+There are two functions to run a query: `run` and `oneRecord`.
 
 #### run
 
@@ -157,9 +160,20 @@ async function run(
 
 It returns an array of objects. Simply have your query return the exact properties or values that you need, and they will appear as fields.
 
-> **_NOTE_** For best results, make your query return specific needed fields rather than nodes. You can also return nodes, but to get to it's fields you'll need to access its `properties`.
+> **_NOTE_** For best results, have your query return specific needed fields or values rather than nodes. You can also return nodes, but to get to their fields you'll need to access their `properties`.
 
-If your query fails to execute, you will receive a clear error message, indicating the query and parameters that failed, and what the error was.
+If your query fails to execute, you will receive a clear error message, indicating the specific query and parameters that failed, and what the error was.  For instance:
+
+```terminal
+Error: the query set provided does not contain the given query:
+
+query:
+-----------------
+MATCH (user:User {name:$name})-[:USES]->(resource:Resource {id:$resourceId})
+RETURN user.id AS userId, user.name AS userName, resource.id AS resourceId
+-----------------   
+params: {"name":"Bruce","resourceId":"printer-XYX11aC42s"}
+```
 
 #### oneRecord
 
@@ -180,8 +194,12 @@ If no records are returned, `oneRecord` returns null.
 
 There are many use cases where you'll be best served to learn about the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme). `neo-forte` just runs a simple query, but if you want to work with transactions, subscriptions, fancy async processing, or very large numbers, you should use the driver.  It's complex for a reason--it's very versatile.
 
-## Relevant Package
+## Relevant Package and Contributing
 
 This package actually uses [neo-forgery](https://www.npmjs.com/package/neo-forgery), and the two complement each other well. The goal of `neo-forgery` is to allow you to run unit tests by mocking the `neo4j-driver` easily.
 
-Both are part of a mission to make programming with neo4j extremely simple. If you share that vision, please reach out with issues, or feel free to jump in and contribute!
+Both are part of a mission to make programming with neo4j<a href="#note1" id="note1ref"><sup>2</sup></a> in node or js extremely simple. If you share that vision, please reach out with issues, or feel free to jump in and contribute!
+
+---
+
+<a id="note1" href="#note1ref"><sup>2</sup></a> Or anything.
