@@ -71,7 +71,7 @@ This package fundamentally does two things:
 1. Creates a session
 2. Runs queries
 
-### Session Creation
+### Creating a Session
 
 As suggested above, the simplest approach is to store these variables in your `.env` file:
 
