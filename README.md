@@ -188,7 +188,7 @@ If no records are returned, `oneRecord` returns null.
 
 ## Limitations
 
-There are many use cases where you'll be best served to learn about the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme). `neo-forte` just runs a simple query, but if you want to work with transactions, subscriptions, fancy async processing, or very large numbers, you should use the driver.  It's complex for a reason--it's very versatile.
+There are many use cases where you'll be best served to call the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme) directly. `neo-forte` just runs a simple query, but if you want to work with transactions, subscriptions, fancy async processing, or very large numbers, you should use the driver.  It's complex for a reason--it's very versatile.
 
 ## Relevant Package and Contributing
 
