@@ -12,9 +12,18 @@ import test from 'ava'
 const testURI = 'testDB_URI'
 const testUSER = 'testDB_USER'
 const testPASSWORD = 'testDB_PASSWORD'
+const testDATABASE = 'testDB_DATABASE'
 
 
 const databaseInfo = {
+    URI: testURI,
+    USER: testUSER,
+    PASSWORD: testPASSWORD,
+    DATABASE: testDATABASE
+}
+
+
+const databaseInfoNoDatabase = {
     URI: testURI,
     USER: testUSER,
     PASSWORD: testPASSWORD
@@ -65,6 +74,11 @@ const { getSession } = proxyquire('../../src/getSession', {
 
 test('getSession', async t => {
     const result = await getSession(databaseInfo)
+    t.is(result, fakeSession);
+})
+
+test('getSession without database', async t => {
+    const result = await getSession(databaseInfoNoDatabase)
     t.is(result, fakeSession);
 })
 

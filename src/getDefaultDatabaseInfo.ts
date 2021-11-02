@@ -4,6 +4,7 @@ export function getDefaultDatabaseInfo() {
   const defaultUri = process.env.DB_URI;
   const defaultUser = process.env.DB_USER;
   const defaultPassword = process.env.DB_PASSWORD;
+  const defaultDatabase = process.env.DB_DATABASE;
 
   if (!('DB_URI' in process.env))
     throw new Error('No DB_URI environment variable found, and no databaseInfo provided');
@@ -15,6 +16,7 @@ export function getDefaultDatabaseInfo() {
   return {
     URI: defaultUri,
     USER: defaultUser,
-    PASSWORD: defaultPassword
+    PASSWORD: defaultPassword,
+    DATABASE: defaultDatabase
   };
 }

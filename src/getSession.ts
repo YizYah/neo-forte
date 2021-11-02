@@ -28,5 +28,9 @@ export async function getSession(databaseInfo?: DatabaseInfo) {
   } catch (err) {
     throw new Error(`DatabaseError: connectivity verification failed. ${err}`)
   }
-  return driver.session()
+  if (finalDatabaseInfo && finalDatabaseInfo.DATABASE){
+    return driver.session({database: finalDatabaseInfo.DATABASE});
+  } 
+  return driver.session();
+  
 }
