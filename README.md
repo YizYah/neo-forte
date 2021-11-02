@@ -12,9 +12,9 @@ Running cypher in js should be *just as simple* as in the data browser!
 
 ## What
 
-A few functions that allow anyone who knows cypher to run a query.
+A few functions that allow anyone who knows cypher to run a query. `neo-forte` uses the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme) to run your queries and returns simple jsons.
 
-It may not be sufficient for everything you'll ever need to do (see [Limitations](#limitations)).  But you can at least get started without studying the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme).
+It may not be sufficient for everything you'll ever need to do (see [Limitations](#limitations)).  But you can at least get started without studying the neo4j driver.
 
 ## Usage
 
