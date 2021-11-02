@@ -30,6 +30,8 @@ npm i neo-forte
 * DB_USER
 * DB_PASSWORD
 
+Optionally, you can also use `DB_PASSWORD` if you want to have a session with a particular database.
+
 Those are the credentials that you use to log into the data browser:
   ![sample browser login session](images/neo4jBrowserLogin.jpg)
 
@@ -78,6 +80,7 @@ As suggested above, the simplest approach is to store these variables in your `.
 * DB_URI,
 * DB_USER,
 * DB_PASSWORD
+* [DB_DATABASE]
 
 But you can also generate sessions for as other databases as needed.
 

@@ -25,7 +25,8 @@ test.serial('getDefaultDatabaseInfo', t => {
     const expected = {
         URI: tempUri,
         USER: tempUser,
-        PASSWORD: tempPassword
+        PASSWORD: tempPassword,
+        DATABASE: undefined
     }
     const result = getDefaultDatabaseInfo()
     t.deepEqual(result, expected)
