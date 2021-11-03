@@ -125,11 +125,9 @@ test('oneRecord throws error from multiple record results', async t => {
       queryString,
       params,
     )
-    console.log(`result=${JSON.stringify(result, null, 2)}`);
 
   })
-  console.log(`error.message=${error.message}`);
-
+  
 
   t.regex(error.message, /More than one result/);
 })

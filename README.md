@@ -15,6 +15,15 @@ Running cypher in js should be *just as simple* as in the data browser!
 
 A few functions that allow anyone who knows cypher to run a query. `neo-forte` uses the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme) to run your queries and returns simple jsons.
 
+Usually no need to declare a driver and then specify the credentials for a session.  And
+
+```typescript
+result.records[0].get('name')
+```
+
+becomes just `result[0].name` or even `result.name`.
+
+
 It may not be sufficient for everything you'll ever need to do (see [Limitations](#limitations)).  But you can at least get started without studying the neo4j driver.
 
 ## Usage
@@ -192,7 +201,9 @@ If no records are returned, `oneRecord` returns null.
 
 ## Limitations
 
-There are many use cases where you'll be best served to call the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme) directly. `neo-forte` just runs a simple query, but if you want to work with transactions, subscriptions, fancy async processing, or very large numbers, you should use the driver.  It's complex for a reason--it's very versatile.
+There are many use cases where you'll be best served to call the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme) directly. The driver is complex for a reason--it's very versatile.
+
+`neo-forte` just runs a simple query, but if you want to work with transactions, subscriptions, fancy async processing, or very large numbers, you should use the driver.  Another limitation could be work with clusters which the member could change a lot during its lifetime (for instance, Aura).
 
 ## Relevant Package
 
