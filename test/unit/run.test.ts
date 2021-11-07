@@ -61,7 +61,6 @@ test('run with returned nodes', async t => {
         queryString,
         params,
     )
-    console.log(`result in test=${JSON.stringify(result, null, 2)}`);
 
     t.like(result[0], expected[0]);
     t.like(result[1], expected[1]);

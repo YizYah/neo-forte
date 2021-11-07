@@ -75,8 +75,6 @@ test('oneRecord throws error from faulty session', async t => {
 
   })
 
-  console.log(error.message)
-
   t.regex(error.message, /problem calling the query/);
 })
 
@@ -84,7 +82,7 @@ test('oneRecord throws error from faulty session', async t => {
 test('oneRecord throws error from faulty query results', async t => {
 
   const session = mockSessionFromQuerySet(querySet)
-  session.run = () => { return { summary: 'defective records' } }
+  session.readTransaction = () => { return { summary: 'defective records' } }
 
   const error = await t.throwsAsync(async () => {
     await oneRecord(
@@ -95,6 +93,7 @@ test('oneRecord throws error from faulty query results', async t => {
 
   })
 
+  console.log(error.message)
 
   t.regex(error.message, /problem converting to/);
 })
