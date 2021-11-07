@@ -20,12 +20,6 @@ const fieldList = ['userId', 'userName', 'platformId']
 test('oneRecord', async t => {
     const session = await getSession()
 
-    console.log(`query:
--------------
-${queryString}
-----------------`)
-    console.log(`params=${JSON.stringify(params, null, 2)}`);
-
     const result = await oneRecord(
         session,
         queryString,
@@ -33,10 +27,6 @@ ${queryString}
         fieldList
 
     )
-
-    console.log(`result=${JSON.stringify(result, null, 2)}`);
-
-
 
     const expected = {
         "userId": "1cf90994-d154-4544-88d0-5f1398673381",

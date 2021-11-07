@@ -9,32 +9,74 @@ A simple querying interface for a neo4j database, requiring only knowledge of cy
 
 ## Why
 
-Running cypher in js should be *just as simple* as in the data browser!
+Running cypher in code should be *just as simple* as in the data browser!
 
 ## What
 
 A few functions that allow anyone who knows cypher to run a query. `neo-forte` uses the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme) to run your queries and returns simple jsons.
 
-Usually no need to declare a driver and then specify the credentials for a session.  And
+Queries automatically run using the [preferred practice](https://community.neo4j.com/t/difference-between-session-run-and-session-readtransaction-or-session-writetransaction/14720) of [transaction functions](https://neo4j.com/docs/javascript-manual/4.3/session-api/asynchronous/#js-driver-async-transaction-fn).
 
-```typescript
-result.records[0].get('name')
-```
+There are two functions for running queries:
 
-becomes just `result[0].name` or even `result.name`.
+* `run()` returns an array of objects
+* `oneRecord()` returns a single object.
 
+## Advantages
 
-It may not be sufficient for everything you'll ever need to do (see [Limitations](#limitations)).  But you can at least get started without studying the neo4j driver.
+1. You don't normally need to declare a driver and then specify the credentials for a session. For instance:
+
+   ```typescript
+    const neo4j = require('neo4j-driver')
+
+    const uri = process.env.URI;
+    const user = process.env.USER_NAME
+    const password = process.env.PASSWORD
+
+    const driver = neo4j.driver(uri, neo4j.auth.basic(user, password))
+    const session = driver.session()
+
+   ```
+
+   becomes
+
+   ```typescript
+    const { getSession } = require('neo-forte')
+    const session = getSession()
+   ```
+
+2. Running queries is simple.  In place of:
+
+    ```typescript
+    const result = await session.writeTransaction(tx =>
+        tx.run(queryString, params)
+    ```
+
+    simply call
+
+    ```typescript
+    const result = await run(session, queryString, params)
+    ```
+
+3. Results are simple jsons:
+
+    ```typescript
+      result.records[0].get('name')
+    ```
+
+      becomes just `result[0].name` with `run()`, or even `result.name` with `oneRecord()`.
+
+`neo-forte` may not support everything you'll ever need to do (see [Limitations](#limitations)).  But you can at least get started without studying the neo4j driver.
 
 ## Usage
 
 [1] Install the package:
 
-```bash
-npm i neo-forte
-```
+  ```bash
+  npm i neo-forte
+  ```
 
-[2] Create a file `.env` at the project root level with these three variables (or add them to an existing one):
+[2] Create a file `.env` at the project root level with these three variables (or add them to your existing `env` file):
 
 * DB_URI
 * DB_USER
@@ -53,28 +95,51 @@ You can just copy over the `.env.sample` file to `.env` and update the values th
 * _**run**_ runs a query with params in a session.  Returns an array of objects containing your data.
 * _**oneRecord**_ a special variation of `run()` that expects a single result and returns an object rather than an array.
 
-You can then access the results directly in your code.  For example:
+  You can then access the results directly in your code.  For example:
 
-```typescript
-import { getSession, run }  from 'neo-forte'
+  ```typescript
+  import { getSession, run }  from 'neo-forte'
 
-const queryString =
-    `match (movie:Movie)-[:ACTED_IN]-(actor:Person {name: $actor}) return movie.title as title`
+  const queryString =
+      `match (movie:Movie)-[:ACTED_IN]-(actor:Person {name: $actor}) return movie.title as title`
 
-const params = {
-    actor: 'Tom Hanks'
-}
+  const params = {
+      actor: 'Tom Hanks'
+  }
 
-const session = await getSession()
+  const session = await getSession()
 
-const result = await run(
-    session,
-    queryString,
-    params,
-)
-// in one sample database, the result is:
-// result = [{ title: "Forrest Gump" }, { title: "Big" }]
+  const result = await run(
+      session,
+      queryString,
+      params,
+  )
+  // in one sample database, the result is:
+  // result = [{ title: "Forrest Gump" }, { title: "Big" }]
+  ```
+
+## Transaction Types
+
+If a query string contains none of the updating clauses in cypher, then `session.readTransaction` is called.  Otherwise, `session.writeTransaction` is called.  
+
+The list of updating clauses sought are:
+
+* CREATE
+* DELETE
+* DETACH
+* MERGE
+* REMOVE
+* SET
+
+If you use any of these reserved strings in a query, then the query will be interpreted as an update query, and `writeTransaction` will be used.  
+
+That can result in queries being misclassified in the rare case that a variable or name includes as a substring any element in the list above.  For instance, the following query would be wrongly classified as an update query:
+
+```cypher
+match (ns:NumberSet {id:$nsId}) return ns 
 ```
+
+The reason is that the node type "NumberSet" contains "Set" as a substring. In the event that a query is wrongly classified as updating, `writeTransaction` will be used instead of `readTransaction`.  However, that should not affect query results.  In the worst case, the query may run less efficiently if you are using a [cluster](https://medium.com/neo4j/querying-neo4j-clusters-7d6fde75b5b4). (Don't worry--you would know if you were using a cluster.)
 
 ## API
 
@@ -203,7 +268,9 @@ If no records are returned, `oneRecord` returns null.
 
 There are many use cases where you'll be best served to call the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme) directly. The driver is complex for a reason--it's very versatile.
 
-`neo-forte` just runs a simple query, but if you want to work with transactions, subscriptions, fancy async processing, or very large numbers, you should use the driver.  Another limitation could be work with clusters which the member could change a lot during its lifetime (for instance, Aura).
+As explained above in [Transaction Types](#transaction-types), `neo-forte` currently uses a rather simple search for update clauses to determine whether a readTransaction or writeTransaction is depermined.  There are rare times when you would be better served to run `readTransaction` yourself.
+
+Also, currently the package does not support custom transaction functions, although those are planned.
 
 ## Relevant Package
 
