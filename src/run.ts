@@ -3,12 +3,12 @@ import { liveToData } from 'neo-forgery';
 import { queryForErrorString } from './queryForErrorString';
 
 const updateClauses = [
-    'MERGE',
     'CREATE',
-    'SET',
     'DELETE',
     'DETACH',
+    'MERGE',
     'REMOVE',
+    'SET',
 ]
 
 const regexString = `.*(${updateClauses.join('|')}).*`
