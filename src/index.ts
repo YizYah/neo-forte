@@ -9,3 +9,4 @@ export const { getDefaultDatabaseInfo } = require('./getDefaultDatabaseInfo')
 export const { run } = require('./run')
 export const { oneRecord } = require('./oneRecord')
 
+export const {Format, TransactionType} = require('./types/settings')

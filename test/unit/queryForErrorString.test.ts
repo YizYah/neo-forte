@@ -1,7 +1,7 @@
 import test from 'ava'
 import { queryForErrorString } from '../../src/queryForErrorString';
 
-const queryString = 'nothing'
+const queryString = 'sample query string'
 const params = {
     foo: "a".repeat(1550),
     bar: 'cut off'

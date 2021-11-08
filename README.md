@@ -222,13 +222,31 @@ There are two functions to run a query: `run` and `oneRecord`.
 
 #### run
 
-The main function is:
+This function uses two exposed enums as parameter types:
+
+```
+enum Format {
+    DataOnly,
+    Complete,
+}
+
+enum TransactionType {
+    Auto,
+    Read,
+    Write,
+}
+
+```
+
+The function declaration looks like this:
 
 ```typescript
 async function run(
     session: Session,
     queryString: string,
-    params: any
+    params: any,
+    format: Format = Format.DataOnly,
+
 )
 ```
 
@@ -249,6 +267,13 @@ RETURN user.id AS userId, user.name AS userName, resource.id AS resourceId
 params: {"name":"Bruce","resourceId":"printer-XYX11aC42s"}
 ```
 
+If you want to see the `summary` statistics, for instance to confirm that a node was deleted, you can set the optional parameter `format` to `Format.Complete` rather than the default `Format.DataOnly`.  Doing so will return an object with two keys:
+
+* `records`: the records returned from the query
+* `summary`: a json of all of the summary statistics returned from the query.
+
+You will probably not need to do so often.
+
 #### oneRecord
 
 A second function, just for convenience, is:
@@ -263,6 +288,8 @@ export async function oneRecord(
 `oneRecord` returns an object with the requested fields.  If more than one record is returned, `oneRecord` will return an error message.
 
 If no records are returned, `oneRecord` returns null.
+
+You cannot specify that you want to see a summary with `oneRecord`.  For that, you must call `run`.
 
 ## Limitations
 
