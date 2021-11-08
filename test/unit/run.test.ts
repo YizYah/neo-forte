@@ -2,6 +2,7 @@ import test from 'ava'
 
 import { mockSessionFromQuerySet, QuerySpec, wrapCopiedResults } from 'neo-forgery'
 import { run } from '../../src/run'
+import { Format, TransactionType } from '../../src/types/settings'
 
 
 const queryString =
@@ -40,7 +41,8 @@ const records =
         }
     ]
 
-const expectedResults = wrapCopiedResults(records)
+const expectedResults = wrapCopiedResults(records,
+    { foo: "bar" })
 
 const simpleQuerySpec: QuerySpec = {
     name: 'sample',
@@ -59,20 +61,22 @@ return i.value as value
 
 const valueIn = 'newValue'
 
-const updateResults = wrapCopiedResults([
-    {
-        "keys": [
-            "value"
-        ],
-        "length": 1,
-        "_fields": [
-            "foo1"
-        ],
-        "_fieldLookup": {
-            "value": 0
+const updateResults = wrapCopiedResults(
+    [
+        {
+            "keys": [
+                "value"
+            ],
+            "length": 1,
+            "_fields": [
+                "foo1"
+            ],
+            "_fieldLookup": {
+                "value": 0
+            }
         }
-    }
-])
+    ]
+)
 
 const updateParams = { valueIn }
 
@@ -91,6 +95,12 @@ const querySet: QuerySpec[] = [
 ]
 
 const expected = [{ title: "Forrest Gump" }, { title: "Big" }]
+const expectedWithSummary = {
+    records: [{ title: "Forrest Gump" }, { title: "Big" }],
+    summary: {
+        foo: "bar"
+    }
+}
 const expectedUpdate = [{ value: "foo1" }]
 
 
@@ -106,6 +116,53 @@ test('run with returned nodes', async t => {
     t.like(result[1], expected[1]);
 })
 
+
+// currently this doesn't test really confirm much.  I'd have
+// to create a special session that behaves differently for a 
+// readTransaction than for a writeTransaction.  But at least 
+// these tests ensure that all of the branching is covered.
+test('run with Transaction set to Read', async t => {
+    const session = mockSessionFromQuerySet(querySet)
+    const result = await run(
+        session,
+        queryString,
+        params,
+        Format.DataOnly,
+        TransactionType.Read
+    )
+
+    t.like(result[0], expected[0]);
+    t.like(result[1], expected[1]);
+})
+
+
+test('run with Transaction set to Write', async t => {
+    const session = mockSessionFromQuerySet(querySet)
+    const result = await run(
+        session,
+        queryString,
+        params,
+        Format.DataOnly,
+        TransactionType.Write
+    )
+
+    t.like(result[0], expected[0]);
+    t.like(result[1], expected[1]);
+})
+
+
+
+test('run with summary param', async t => {
+    const session = mockSessionFromQuerySet(querySet)
+    const result = await run(
+        session,
+        queryString,
+        params,
+        Format.Complete,
+    )
+
+    t.like(result, expectedWithSummary);
+})
 
 test('run with write transaction', async t => {
     const session = mockSessionFromQuerySet(querySet)

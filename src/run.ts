@@ -1,6 +1,7 @@
 import Session from 'neo4j-driver-core/types/session';
 import { liveToData } from 'neo-forgery';
 import { queryForErrorString } from './queryForErrorString';
+import { Format, TransactionType } from './types/settings';
 
 const updateClauses = [
     'CREATE',
@@ -23,11 +24,21 @@ function isWriteTransaction(input: string): boolean {
 export async function run(
     session: Session,
     queryString: string,
-    params: any
+    params: any,
+    format: Format = Format.DataOnly,
+    transactionType: TransactionType = TransactionType.Auto,
 ) {
     let result: any
+
+    let finalTransactionType = transactionType
+    if (transactionType === TransactionType.Auto) {
+        finalTransactionType =
+            isWriteTransaction(queryString) ?
+                TransactionType.Write :
+                TransactionType.Read
+    }
     try {
-        if (isWriteTransaction(queryString)) {
+        if (finalTransactionType === TransactionType.Write) {
             result = await session.writeTransaction(tx =>
                 tx.run(queryString, params)
             )
@@ -44,7 +55,15 @@ export async function run(
     }
 
     try {
-        return liveToData(result)
+        const records = liveToData(result)
+        if (format === Format.DataOnly) {
+            return records
+        }
+        const summary = { ...result.summary }
+        return {
+            records,
+            summary
+        }
     } catch (err) {
         throw new Error(`problem converting to simple records the response to this query: : ${queryForErrorString}
         -------------------

@@ -141,6 +141,8 @@ match (ns:NumberSet {id:$nsId}) return ns
 
 The reason is that the node type "NumberSet" contains "Set" as a substring. In the event that a query is wrongly classified as updating, `writeTransaction` will be used instead of `readTransaction`.  However, that should not affect query results.  In the worst case, the query may run less efficiently if you are using a [cluster](https://medium.com/neo4j/querying-neo4j-clusters-7d6fde75b5b4). (Don't worry--you would know if you were using a cluster.)
 
+That said, if you happen to have a query that you would expect to be wrongly classified as updating, you can change the `transactionType` parameter in `run` from the default `TransactionType.Auto` to `TransactionType.Read`.  That option forces the query to be run within a `readTransaction`.
+
 ## API
 
 This package fundamentally does two things:
@@ -222,13 +224,31 @@ There are two functions to run a query: `run` and `oneRecord`.
 
 #### run
 
-The main function is:
+This function uses two exposed enums as parameter types:
+
+```
+enum Format {
+    DataOnly,
+    Complete,
+}
+
+enum TransactionType {
+    Auto,
+    Read,
+    Write,
+}
+
+```
+
+The function declaration looks like this:
 
 ```typescript
 async function run(
     session: Session,
     queryString: string,
-    params: any
+    params: any,
+    format: Format = Format.DataOnly,
+    transactionType: TransactionType = TransactionType.Auto
 )
 ```
 
@@ -249,6 +269,15 @@ RETURN user.id AS userId, user.name AS userName, resource.id AS resourceId
 params: {"name":"Bruce","resourceId":"printer-XYX11aC42s"}
 ```
 
+If you want to see the `summary` statistics, for instance to confirm that a node was deleted, you can set the optional parameter `format` to `Format.Complete` rather than the default `Format.DataOnly`.  Doing so will return an object with two keys:
+
+* `records`: the records returned from the query
+* `summary`: a json of all of the summary statistics returned from the query.
+
+You will probably not need to do so often.
+
+The other optional parameter is `transactionType`.  As is discussed in [Transaction Types](#transaction-types), by default the correct type is determined automatically.  However, if you'd like to specify that the transaction type should be `read` or `write`, you may do so this way.
+
 #### oneRecord
 
 A second function, just for convenience, is:
@@ -264,13 +293,13 @@ export async function oneRecord(
 
 If no records are returned, `oneRecord` returns null.
 
+You cannot specify that you want to see a summary with `oneRecord`.  For that, you must call `run`.
+
 ## Limitations
 
-There are many use cases where you'll be best served to call the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme) directly. The driver is complex for a reason--it's very versatile.
+There are use cases where you'll be best served to call the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme) directly. The driver is complex for a reason--it's very versatile.
 
-As explained above in [Transaction Types](#transaction-types), `neo-forte` currently uses a rather simple search for update clauses to determine whether a readTransaction or writeTransaction is depermined.  There are rare times when you would be better served to run `readTransaction` yourself.
-
-Also, currently the package does not support custom transaction functions, although those are planned.
+Most notably, this package currently does not support custom transaction functions.
 
 ## Relevant Package
 

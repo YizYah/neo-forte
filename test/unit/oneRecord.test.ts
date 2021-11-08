@@ -1,4 +1,5 @@
 import test from 'ava'
+import { Format } from '../../src/types/settings'
 
 import { mockSessionFromQuerySet, QuerySpec, wrapCopiedResults } from 'neo-forgery'
 import { oneRecord } from '../../src/oneRecord'
@@ -59,7 +60,6 @@ const querySet: QuerySpec[] = [
   }
 ]
 
-
 test('oneRecord', async t => {
   const session = mockSessionFromQuerySet(querySet)
   const result = await oneRecord(
@@ -69,6 +69,17 @@ test('oneRecord', async t => {
   )
   t.like(result, expected);
 })
+
+test('oneRecord complete format', async t => {
+  const session = mockSessionFromQuerySet(querySet)
+  const result = await oneRecord(
+    session,
+    queryString,
+    params,
+  )
+  t.like(result, expected);
+})
+
 
 test('oneRecord throws error from faulty session', async t => {
   const session = mockSessionFromQuerySet([])
