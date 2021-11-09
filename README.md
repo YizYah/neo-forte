@@ -93,9 +93,9 @@ You can just copy over the [.env.sample file](https://github.com/YizYah/neo-fort
 
 [3] Use the following functions, all defined in the [API](#api) section below:
 
-* _**getSession**_ returns a database session.
-* _**run**_ runs a query with params in a session.  Returns an array of objects containing your data.
-* _**oneRecord**_ a special variation of `run()` that expects a single result and returns an object rather than an array.
+* _**getSession**_: returns a database session.
+* _**run**_: runs a query with params in a session.  Returns an array of objects containing your data.
+* _**oneRecord**_: a special variation of `run()` that expects a single result and returns an object rather than an array.
 
   You can then access the results directly in your code.  For example:
 
