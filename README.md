@@ -143,6 +143,43 @@ The reason is that the node type "NumberSet" contains "Set" as a substring. In t
 
 That said, if you happen to have a query that you would expect to be wrongly classified as updating, you can change the `transactionType` parameter in `run` from the default `TransactionType.Auto` to `TransactionType.Read`.  That option forces the query to be run within a `readTransaction`.
 
+## Passing Custom Transaction Functions
+
+If you want to create your own custom function to pass into a transaction, then you need to call the `session.readTransaction()` or `session.writeTransaction()` methods built into `neo4j-driver`.  Here's an example:
+
+```typescript
+import { getSession }  from 'neo-forte'
+const session = await getSession()
+
+try {
+  const relationshipsCreated = await session.writeTransaction(tx =>
+    Promise.all(
+      names.map(name =>
+        tx
+          .run(
+            'MATCH (emp:Person {name: $person_name}) ' +
+              'MERGE (com:Company {name: $company_name}) ' +
+              'MERGE (emp)-[:WORKS_FOR]->(com)',
+            { person_name: name, company_name: companyName }
+          )
+          .then(
+            result =>
+              result.summary.counters.updates().relationshipsCreated
+          )
+          .then(relationshipsCreated =>
+            neo4j.int(relationshipsCreated).toInt()
+          )
+      )
+    ).then(values => values.reduce((a, b) => a + b))
+  )
+} finally {
+  await session.close()
+}
+
+```
+
+See the [driver documentation](https://neo4j.com/docs/javascript-manual/4.3/session-api/asynchronous/) for more information.
+
 ## API
 
 This package fundamentally does two things:
@@ -299,11 +336,13 @@ You cannot specify that you want to see a summary with `oneRecord`.  For that, y
 
 There are use cases where you'll be best served to call the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme) directly. The driver is complex for a reason--it's very versatile.
 
-Most notably, this package currently does not support custom transaction functions.
+See in particular [Passing Custom Transaction Functions](#passing-custom-transaction-functions).  
+
+Note that the session returned by `getSession()` is a fully functional neo4j driver session.  So you can call any session method that you like as described in the driver documentation.
 
 ## Relevant Package
 
-This package actually uses [neo-forgery](https://www.npmjs.com/package/neo-forgery).  The two complement each other well. The goal of `neo-forgery` is to allow you to run unit tests by mocking the `neo4j-driver` easily.
+This package actually uses [neo-forgery](https://github.com/YizYah/neo-forgery).  The two complement each other well. The goal of `neo-forgery` is to allow you to run unit tests by mocking the `neo4j-driver` easily.
 
 Both pursue a shared mission: programming with neo4j<a href="#note1" id="note1ref"><sup>2</sup></a> should be really simple!
 
@@ -314,6 +353,6 @@ Both pursue a shared mission: programming with neo4j<a href="#note1" id="note1re
 
 If you share that vision :thumbsup:, please reach out with issues, or feel free to jump in and contribute!
 
----
+## Special Thanks
 
-<a id="note1" href="#note1ref"><sup>2</sup></a> Or anything.
+As with [neo-forgery](https://github.com/YizYah/neo-forgery), a big thanks to [Antonio Barcélos](https://github.com/bigmontz) on the [neo4j-driver](https://github.com/neo4j/neo4j-javascript-driver) team for his feedback on making this tool optimally useful.
