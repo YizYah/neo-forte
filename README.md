@@ -78,7 +78,7 @@ At times, you may need to supplement `neo-forte` with neo4j-driver session metho
   npm i neo-forte
   ```
 
-[2] Create a file `.env` at the project root level with these three variables (or add them to your existing `env` file):
+[2] Create a file `.env` at the project root level with these three variables (or add them to your existing `.env` file):
 
 * DB_URI
 * DB_USER
@@ -89,9 +89,9 @@ Optionally, you can also use `DB_PASSWORD` if you want to have a session with a 
 Those are the credentials that you use to log into the data browser:
   ![sample browser login session](images/neo4jBrowserLogin.jpg)
 
-You can just copy over the `.env.sample` file to `.env` and update the values there.
+You can just copy over the [.env.sample file](https://github.com/YizYah/neo-forte/blob/main/.env.sample) to `.env` and update the values there.
 
-[3] Use the following functions, all defined in API below:
+[3] Use the following functions, all defined in the [API](#api) section below:
 
 * _**getSession**_ returns a database session.
 * _**run**_ runs a query with params in a session.  Returns an array of objects containing your data.
