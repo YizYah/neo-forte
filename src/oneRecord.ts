@@ -1,6 +1,5 @@
 import Session from 'neo4j-driver-core/types/session';
 import { queryForErrorString } from './queryForErrorString';
-import { Format, TransactionType } from './types/settings';
 
 import { run } from './run';
 
