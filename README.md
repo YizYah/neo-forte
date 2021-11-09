@@ -24,7 +24,7 @@ There are two functions for running queries:
 
 ## Advantages
 
-1. You don't normally need to declare a driver and then specify the credentials for a session. For instance:
+1. You usually don't need to declare a driver or specify credentials for a session. For instance:
 
    ```typescript
     const neo4j = require('neo4j-driver')
@@ -45,7 +45,7 @@ There are two functions for running queries:
     const session = getSession()
    ```
 
-2. Running queries is simple.  In place of:
+2. Running queries is as simple as in the browser.  In place of:
 
     ```typescript
     const result = await session.writeTransaction(tx =>
@@ -58,15 +58,17 @@ There are two functions for running queries:
     const result = await run(session, queryString, params)
     ```
 
-3. Results are simple jsons:
+3. Records returned are simple jsons:
 
     ```typescript
       result.records[0].get('name')
     ```
 
-      becomes just `result[0].name` with `run()`, or even `result.name` with `oneRecord()`.
+      becomes:
+      * `result[0].name` with `run()`
+      * `result.name` with `oneRecord()`.
 
-`neo-forte` may not support everything you'll ever need to do (see [Limitations](#limitations)).  But you can at least get started without studying the neo4j driver.
+At times, you may need to supplement `neo-forte` with neo4j-driver session methods (see [Limitations](#limitations)).  But to start you do not need to learn about the neo4j driver.
 
 ## Usage
 
@@ -120,7 +122,11 @@ You can just copy over the `.env.sample` file to `.env` and update the values th
 
 ## Transaction Types
 
-If a query string contains none of the updating clauses in cypher, then `session.readTransaction` is called.  Otherwise, `session.writeTransaction` is called.  
+Neo4j recommends [running transactions for production queries](https://community.neo4j.com/t/difference-between-session-run-and-session-readtransaction-or-session-writetransaction/14720).  That adds a bit of complexity that `neo-forte` hides from you.
+
+There are two types of transactions: read and write.
+
+By default, `neo-forte` automatically chooses which one to run from your query.  If a query string contains none of the updating clauses in cypher, then `session.readTransaction` is called.  Otherwise, `session.writeTransaction` is called.  
 
 The list of updating clauses sought are:
 
@@ -131,15 +137,15 @@ The list of updating clauses sought are:
 * REMOVE
 * SET
 
-If you use any of these reserved strings in a query, then the query will be interpreted as an update query, and `writeTransaction` will be used.  
+Usually, that works quite smoothly.  But, if you happen to use any of these reserved strings in a query, then the query will be interpreted as an updating query, and `writeTransaction` will be used.
 
-That can result in queries being misclassified in the rare case that a variable or name includes as a substring any element in the list above.  For instance, the following query would be wrongly classified as an update query:
+That can result in queries being misclassified in the rare case that a variable or name includes as a substring any element in the list above.  For instance, the following query would be wrongly classified as an updating query:
 
 ```cypher
 match (ns:NumberSet {id:$nsId}) return ns 
 ```
 
-The reason is that the node type "NumberSet" contains "Set" as a substring. In the event that a query is wrongly classified as updating, `writeTransaction` will be used instead of `readTransaction`.  However, that should not affect query results.  In the worst case, the query may run less efficiently if you are using a [cluster](https://medium.com/neo4j/querying-neo4j-clusters-7d6fde75b5b4). (Don't worry--you would know if you were using a cluster.)
+The reason is that the node type "NumberSet" contains "Set" as a substring. In the event that a query is wrongly classified as updating, `writeTransaction` will be used instead of `readTransaction`.  However, that should not affect query results.  In the worst case, the query may run less efficiently if you are using a [cluster](https://medium.com/neo4j/querying-neo4j-clusters-7d6fde75b5b4).
 
 That said, if you happen to have a query that you would expect to be wrongly classified as updating, you can change the `transactionType` parameter in `run` from the default `TransactionType.Auto` to `TransactionType.Read`.  That option forces the query to be run within a `readTransaction`.
 
@@ -263,7 +269,7 @@ There are two functions to run a query: `run` and `oneRecord`.
 
 This function uses two exposed enums as parameter types:
 
-```
+```typescript
 enum Format {
     DataOnly,
     Complete,
