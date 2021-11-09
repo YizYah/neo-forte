@@ -48,7 +48,7 @@ export async function run(
             )
         }
     } catch (err) {
-        throw new Error(`problem calling the query: ${queryForErrorString}
+        throw new Error(`problem calling the query: ${queryForErrorString(queryString, params)}
         -------------------
         Here is the error reported: ${err}`);
 
