@@ -117,37 +117,34 @@ test('run with returned nodes', async t => {
 })
 
 
-// currently this doesn't test really confirm much.  I'd have
-// to create a special session that behaves differently for a 
-// readTransaction than for a writeTransaction.  But at least 
-// these tests ensure that all of the branching is covered.
-test('run with Transaction set to Read', async t => {
+test('run() with transaction set to write works', async t => {
     const session = mockSessionFromQuerySet(querySet)
     const result = await run(
         session,
         queryString,
         params,
-        Format.DataOnly,
-        TransactionType.Read
-    )
-
-    t.like(result[0], expected[0]);
-    t.like(result[1], expected[1]);
-})
-
-
-test('run with Transaction set to Write', async t => {
-    const session = mockSessionFromQuerySet(querySet)
-    const result = await run(
-        session,
-        queryString,
-        params,
-        Format.DataOnly,
+        Format.Complete,
         TransactionType.Write
     )
 
-    t.like(result[0], expected[0]);
-    t.like(result[1], expected[1]);
+    t.like(result.records[0], expected[0]);
+    t.like(result.records[1], expected[1]);
+    t.is(result.summary.transactionType, 'WRITE')
+})
+
+test('run() with transaction set to read works', async t => {
+    const session = mockSessionFromQuerySet(querySet)
+    const result = await run(
+        session,
+        queryString,
+        params,
+        Format.Complete,
+        TransactionType.Read
+    )
+
+    t.like(result.records[0], expected[0]);
+    t.like(result.records[1], expected[1]);
+    t.is(result.summary.transactionType, 'READ')
 })
 
 
