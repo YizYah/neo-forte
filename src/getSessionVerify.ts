@@ -5,7 +5,7 @@ import { DatabaseInfo } from "./types/DatabaseInfo"
 const neo4j = require('neo4j-driver')
 const { getDefaultDatabaseInfo } = require('./getDefaultDatabaseInfo')
 
-export function getSession(databaseInfo?: DatabaseInfo) {
+export async function getSessionVerify(databaseInfo?: DatabaseInfo) {
   let finalDatabaseInfo = databaseInfo
   if (!databaseInfo) {
     try {
@@ -23,6 +23,11 @@ export function getSession(databaseInfo?: DatabaseInfo) {
     )
   )
 
+  try {
+    await driver.verifyConnectivity()
+  } catch (err) {
+    throw new Error(`DatabaseError: connectivity verification failed. ${err}`)
+  }
   if (finalDatabaseInfo && finalDatabaseInfo.DATABASE){
     return driver.session({database: finalDatabaseInfo.DATABASE});
   } 

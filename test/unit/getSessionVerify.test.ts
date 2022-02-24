@@ -65,23 +65,38 @@ const proxyquire = require('proxyquire')
 let driverStub: any = driverFailConnectivity
 
 
-const { getSession } = proxyquire('../../src/getSession', {
+const { getSessionVerify } = proxyquire('../../src/getSessionVerify', {
     'neo4j-driver': {
         driver: driverStub
     }
 });
 
 
-test('getSession', t => {
-    const result = getSession(databaseInfo)
+test('getSession', async t => {
+    const result = await getSessionVerify(databaseInfo)
     t.is(result, fakeSession);
 })
 
-test('getSession without database', t => {
-    const result = getSession(databaseInfoNoDatabase)
+test('getSession without database', async t => {
+    const result = await getSessionVerify(databaseInfoNoDatabase)
     t.is(result, fakeSession);
 })
 
+
+test.serial('getSession throws error when not valid connection', async t => {
+    driverStub = driverFailConnectivity
+    const failingConnection = {
+        URI: 'wrong',
+        USER: testUSER,
+        PASSWORD: testPASSWORD
+    }
+
+    const error = await t.throwsAsync(async () => {
+        await getSessionVerify(failingConnection)
+    })
+
+    t.regex(error.message, /This will NEVER work/);
+})
 
 test.serial('getSession throws error with no DB_URI', async t => {
     driverStub = driverPassConnectivity
@@ -90,7 +105,7 @@ test.serial('getSession throws error with no DB_URI', async t => {
     process.env = {};
 
     const error = await t.throwsAsync(async () => {
-        await getSession()
+        await getSessionVerify()
 
     })
 

@@ -17,7 +17,9 @@ A few functions that allow anyone who knows cypher to run a query. `neo-forte` u
 
 Queries automatically run using the [preferred practice](https://community.neo4j.com/t/difference-between-session-run-and-session-readtransaction-or-session-writetransaction/14720) of [transaction functions](https://neo4j.com/docs/javascript-manual/4.3/session-api/asynchronous/#js-driver-async-transaction-fn).
 
-There are two functions for running queries:
+You can open a session with a simple call to `getSession()`.
+
+There are two functions for running queries that return jsons:
 
 * `run()` returns an array of objects
 * `oneRecord()` returns a single object.
@@ -93,9 +95,10 @@ You can just copy over the [.env.sample file](https://github.com/YizYah/neo-fort
 
 [3] Use the following functions, all defined in the [API](#api) section below:
 
-* _**getSession**_ returns a database session.
-* _**run**_ runs a query with params in a session.  Returns an array of objects containing your data.
-* _**oneRecord**_ a special variation of `run()` that expects a single result and returns an object rather than an array.
+* **getSession**: returns a database session.
+* **getSessionVerify**: an async version that returns a database session after verifying the driver connection.
+* **run**: runs a query with params in a session.  Returns an array of objects containing your data.
+* **oneRecord**: a special variation of `run()` that expects a single result and returns an object rather than an array.
 
   You can then access the results directly in your code.  For example:
 
@@ -109,7 +112,7 @@ You can just copy over the [.env.sample file](https://github.com/YizYah/neo-fort
       actor: 'Tom Hanks'
   }
 
-  const session = await getSession()
+  const session = getSession()
 
   const result = await run(
       session,
@@ -219,10 +222,10 @@ interface DatabaseInfo {
 
 #### getSession()
 
-An async function returning a session:
+Returns a session synchronously:
 
 ```typescript
-async function getSession(databaseInfo?: DatabaseInfo)
+function getSession(databaseInfo?: DatabaseInfo)
 ```
 
 Takes an optional [DatabaseInfo](#databaseinfo-type) as its only parameter. If no value is passed for `databaseInfo`, here is what getSession does:
@@ -235,8 +238,8 @@ Here's a sample usage relying upon the `.env` file to provide the needed databas
 ```typescript
 import { getSession } from 'neo-forte'
 
-(async ()=> {
-  const session = await getSession()
+(()=> {
+  const session = getSession()
   console.log(`session=${JSON.stringify(session, null, 2)}`)
 })()
 ```
@@ -252,14 +255,33 @@ const databaseInfo:DatabaseInfo = {
   PASSWORD: '7BxrLxO8Arbce3ffelddl2KJJK2Hyt08vPJ3lPQe60F',
 }
 
-(async ()=> {
-  const session = await getSession(databaseInfo)
+(()=> {
+  const session = getSession(databaseInfo)
   console.log(`session=${JSON.stringify(session, null, 2)}`)
 })()
 
 ```
 
-> **_NOTE_**: `getSession()` will also check the validity of your connection.  If the test fails, you will receive an error.
+#### getSessionVerify()
+
+An async version of `getSession` that also verifies your connection.  Everything else is the same.
+
+```typescript
+async function getSessionVerify(databaseInfo?: DatabaseInfo)
+```
+
+Here's a sample usage:
+
+```typescript
+import { getSessionVerify } from 'neo-forte'
+
+(async ()=> {
+  const session = await getSessionVerify()
+  console.log(`session=${JSON.stringify(session, null, 2)}`)
+})()
+```
+
+> ***NOTE***: `getSessionVerify()` will check the validity of your connection.  If the test fails, you will receive an error.
 
 ### Running Queries
 
@@ -297,7 +319,7 @@ async function run(
 
 `run` returns an array of objects. Simply have your query return specific needed fields or values, and they will appear as keys within the objects of the array.
 
-> **_NOTE_** For best results, do not return simple nodes.  It is not a problem, they will be stored as jsons. But to get to their fields, you'll then need to access their `properties`.
+> ***NOTE*** For best results, do not return simple nodes.  It is not a problem, they will be stored as jsons. But to get to their fields, you'll then need to access their `properties`.
 
 If your query fails to execute, you will receive a clear error message, indicating the specific query and parameters that failed, and what the error was.  For instance:
 

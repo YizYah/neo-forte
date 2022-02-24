@@ -2,11 +2,11 @@
 export * from './types/DatabaseInfo'
 
 //functions
-export const { getSession } = require('./getSession')
-export const { getDefaultDatabaseInfo } = require('./getDefaultDatabaseInfo')
-// export const { databaseInfo } = require('./databaseInfo')
+export { getSession } from './getSession'
+export { getSessionVerify } from './getSessionVerify'
+export { getDefaultDatabaseInfo } from './getDefaultDatabaseInfo'
 
-export const { run } = require('./run')
-export const { oneRecord } = require('./oneRecord')
+export { run } from './run'
+export { oneRecord } from './oneRecord'
 
-export const {Format, TransactionType} = require('./types/settings')
+export { Format, TransactionType } from './types/settings'
