@@ -68,7 +68,7 @@
   "dependencies": {
     "dotenv": "^10.0.0",
     "neo-forgery": "^2.0.0",
-    "neo4j-driver": "^4.4.3",
-    "neo4j-driver-core": "^4.4.3"
+    "neo4j-driver": "^5.0.1",
+    "neo4j-driver-core": "^5.0.1"
   }
 }
