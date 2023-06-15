@@ -1,11 +1,12 @@
 /* eslint-disable  @typescript-eslint/no-non-null-assertion */
 
+import { Session } from "neo4j-driver-core"
 import { DatabaseInfo } from "./types/DatabaseInfo"
 
 const neo4j = require('neo4j-driver')
 const { getDefaultDatabaseInfo } = require('./getDefaultDatabaseInfo')
 
-export async function getSessionVerify(databaseInfo?: DatabaseInfo) {
+export async function getSessionVerify(databaseInfo?: DatabaseInfo): Promise<Session> {
   let finalDatabaseInfo = databaseInfo
   if (!databaseInfo) {
     try {
