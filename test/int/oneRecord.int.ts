@@ -17,14 +17,14 @@ const params = {
 
 const fieldList = ['userId', 'userName', 'platformId']
 
-test('oneRecord', async t => {
+test('oneRecord', async (t:any) => {
     const session = await getSession()
 
     const result = await oneRecord(
         session,
         queryString,
         params,
-        fieldList
+        // fieldList
 
     )
 

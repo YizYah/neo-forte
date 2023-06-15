@@ -10,7 +10,7 @@ import {
     TransactionType
 } from '../../src'
 
-test('index exports', t => {
+test('index exports', (t: any) => {
     t.is(typeof getSession, 'function');
     t.is(typeof getSessionVerify, 'function');
     t.is(typeof getDefaultDatabaseInfo, 'function');

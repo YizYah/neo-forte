@@ -72,18 +72,18 @@ const { getSession } = proxyquire('../../src/getSession', {
 });
 
 
-test('getSession', t => {
+test('getSession', (t: any) => {
     const result = getSession(databaseInfo)
     t.is(result, fakeSession);
 })
 
-test('getSession without database', t => {
+test('getSession without database', (t: any) => {
     const result = getSession(databaseInfoNoDatabase)
     t.is(result, fakeSession);
 })
 
 
-test.serial('getSession throws error with no DB_URI', async t => {
+test.serial('getSession throws error with no DB_URI', async (t: any) => {
     driverStub = driverPassConnectivity
 
     const env: any = process.env;

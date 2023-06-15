@@ -17,7 +17,7 @@ const tempUser = 'tempUser'
 const tempPassword = 'tempPassword'
 
 
-test.serial('getDefaultDatabaseInfo', t => {
+test.serial('getDefaultDatabaseInfo', (t: any) => {
     process.env.DB_URI = tempUri
     process.env.DB_USER = tempUser
     process.env.DB_PASSWORD = tempPassword
@@ -32,7 +32,7 @@ test.serial('getDefaultDatabaseInfo', t => {
     t.deepEqual(result, expected)
 })
 
-test.serial('getDefaultDatabaseInfo error for no Uri', t => {
+test.serial('getDefaultDatabaseInfo error for no Uri', (t: any) => {
 
     delete process.env['DB_URI']
     process.env.DB_USER = tempUser
@@ -45,7 +45,7 @@ test.serial('getDefaultDatabaseInfo error for no Uri', t => {
     t.regex(error.message, /No DB_URI environment/);
 })
 
-test.serial('getDefaultDatabaseInfo error for no temp user', t => {
+test.serial('getDefaultDatabaseInfo error for no temp user', (t: any) => {
 
     process.env.DB_URI = tempUri
     delete process.env['DB_USER']
@@ -58,7 +58,7 @@ test.serial('getDefaultDatabaseInfo error for no temp user', t => {
     t.regex(error.message, /No DB_USER environment/);
 })
 
-test.serial('getDefaultDatabaseInfo error for no temp password', t => {
+test.serial('getDefaultDatabaseInfo error for no temp password', (t: any) => {
 
     process.env.DB_URI = tempUri
     process.env.DB_USER = tempUser

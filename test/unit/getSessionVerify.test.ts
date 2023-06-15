@@ -72,18 +72,18 @@ const { getSessionVerify } = proxyquire('../../src/getSessionVerify', {
 });
 
 
-test('getSession', async t => {
+test('getSession', async (t: any) => {
     const result = await getSessionVerify(databaseInfo)
     t.is(result, fakeSession);
 })
 
-test('getSession without database', async t => {
+test('getSession without database', async (t: any) => {
     const result = await getSessionVerify(databaseInfoNoDatabase)
     t.is(result, fakeSession);
 })
 
 
-test.serial('getSession throws error when not valid connection', async t => {
+test.serial('getSession throws error when not valid connection', async (t: any) => {
     driverStub = driverFailConnectivity
     const failingConnection = {
         URI: 'wrong',
@@ -98,7 +98,7 @@ test.serial('getSession throws error when not valid connection', async t => {
     t.regex(error.message, /This will NEVER work/);
 })
 
-test.serial('getSession throws error with no DB_URI', async t => {
+test.serial('getSession throws error with no DB_URI', async (t: any) => {
     driverStub = driverPassConnectivity
 
     const env: any = process.env;

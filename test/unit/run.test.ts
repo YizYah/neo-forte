@@ -104,7 +104,7 @@ const expectedWithSummary = {
 const expectedUpdate = [{ value: "foo1" }]
 
 
-test('run with returned nodes', async t => {
+test('run with returned nodes', async (t: any) => {
     const session = mockSessionFromQuerySet(querySet)
     const result = await run(
         session,
@@ -117,7 +117,7 @@ test('run with returned nodes', async t => {
 })
 
 
-test('run() with transaction set to write works', async t => {
+test('run() with transaction set to write works', async (t: any) => {
     const session = mockSessionFromQuerySet(querySet)
     const result = await run(
         session,
@@ -132,7 +132,7 @@ test('run() with transaction set to write works', async t => {
     t.is(result.summary.transactionType, 'WRITE')
 })
 
-test('run() with transaction set to read works', async t => {
+test('run() with transaction set to read works', async (t: any) => {
     const session = mockSessionFromQuerySet(querySet)
     const result = await run(
         session,
@@ -149,7 +149,7 @@ test('run() with transaction set to read works', async t => {
 
 
 
-test('run with summary param', async t => {
+test('run with summary param', async (t: any) => {
     const session = mockSessionFromQuerySet(querySet)
     const result = await run(
         session,
@@ -161,7 +161,7 @@ test('run with summary param', async t => {
     t.like(result, expectedWithSummary);
 })
 
-test('run with write transaction', async t => {
+test('run with write transaction', async (t: any) => {
     const session = mockSessionFromQuerySet(querySet)
     const result = await run(
         session,
@@ -172,7 +172,7 @@ test('run with write transaction', async t => {
     t.like(result[0], expectedUpdate[0]);
 })
 
-test('run() throws error string', async t => {
+test('run() throws error string', async (t: any) => {
     const session = mockSessionFromQuerySet([])
 
     const error = await t.throwsAsync(async () => {

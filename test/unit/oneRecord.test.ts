@@ -60,7 +60,7 @@ const querySet: QuerySpec[] = [
   }
 ]
 
-test('oneRecord', async t => {
+test('oneRecord', async (t: any) => {
   const session = mockSessionFromQuerySet(querySet)
   const result = await oneRecord(
     session,
@@ -70,7 +70,7 @@ test('oneRecord', async t => {
   t.like(result, expected);
 })
 
-test('oneRecord complete format', async t => {
+test('oneRecord complete format', async (t: any) => {
   const session = mockSessionFromQuerySet(querySet)
   const result = await oneRecord(
     session,
@@ -81,7 +81,7 @@ test('oneRecord complete format', async t => {
 })
 
 
-test('oneRecord throws error from faulty session', async t => {
+test('oneRecord throws error from faulty session', async (t: any) => {
   const session = mockSessionFromQuerySet([])
 
   const error = await t.throwsAsync(async () => {
@@ -96,7 +96,7 @@ test('oneRecord throws error from faulty session', async t => {
 })
 
 
-test('oneRecord throws error from faulty query results', async t => {
+test('oneRecord throws error from faulty query results', async (t: any) => {
 
   const session = mockSessionFromQuerySet(querySet)
   session.readTransaction = () => { return { summary: 'defective records' } }
@@ -114,7 +114,7 @@ test('oneRecord throws error from faulty query results', async t => {
 })
 
 
-test('oneRecord throws error from multiple record results', async t => {
+test('oneRecord throws error from multiple record results', async (t: any) => {
   const queryResultsMultiple = {
     "records": [
       resultRecord,
@@ -147,7 +147,7 @@ test('oneRecord throws error from multiple record results', async t => {
 })
 
 
-test('oneRecord returns null when no records', async t => {
+test('oneRecord returns null when no records', async (t: any) => {
   const queryResultsNoRecords = {
     "records": [
     ],
