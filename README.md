@@ -225,7 +225,7 @@ interface DatabaseInfo {
 Returns a session synchronously:
 
 ```typescript
-function getSession(databaseInfo?: DatabaseInfo)
+function getSession(databaseInfo?: DatabaseInfo): Session
 ```
 
 Takes an optional [DatabaseInfo](#databaseinfo-type) as its only parameter. If no value is passed for `databaseInfo`, here is what getSession does:
@@ -239,7 +239,9 @@ Here's a sample usage relying upon the `.env` file to provide the needed databas
 import { getSession } from 'neo-forte'
 
 (()=> {
-  const session = getSession()
+  import { Session } from "neo4j-driver-core"
+
+  const session: Session = getSession()
   console.log(`session=${JSON.stringify(session, null, 2)}`)
 })()
 ```
@@ -247,6 +249,7 @@ import { getSession } from 'neo-forte'
 Here's a usage where `databaseInfo` is set manually:
 
 ```typescript
+import { Session } from "neo4j-driver-core"
 import {DatabaseInfo, getSession} from 'neo-forte'
 
 const databaseInfo:DatabaseInfo = {
@@ -256,7 +259,7 @@ const databaseInfo:DatabaseInfo = {
 }
 
 (()=> {
-  const session = getSession(databaseInfo)
+  const session: Session = getSession(databaseInfo)
   console.log(`session=${JSON.stringify(session, null, 2)}`)
 })()
 
