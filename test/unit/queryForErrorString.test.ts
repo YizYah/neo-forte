@@ -7,7 +7,7 @@ const params = {
     bar: 'cut off'
 }
 
-test('queryForErrorString', t => {
+test('queryForErrorString', (t: any) => {
     const result = queryForErrorString(queryString, params)
     t.notRegex(result, /cut off/);
 })
