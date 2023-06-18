@@ -1,4 +1,5 @@
 import test from 'ava'
+import { Session } from '../../src'
 
 
 /*
@@ -73,7 +74,7 @@ const { getSession } = proxyquire('../../src/getSession', {
 
 
 test('getSession', (t: any) => {
-    const result = getSession(databaseInfo)
+    const result: Session = getSession(databaseInfo)
     t.is(result, fakeSession);
 })
 

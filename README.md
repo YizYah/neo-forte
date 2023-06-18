@@ -24,6 +24,8 @@ There are two functions for running queries that return jsons:
 * `run()` returns an array of objects
 * `oneRecord()` returns a single object.
 
+The types `Session` and `Driver` from the current version of the `neo4j-driver-core` are also exposted so that you can hard-type them in your code.
+
 ## Advantages
 
 1. You usually don't need to declare a driver or specify credentials for a session. For instance:
@@ -209,7 +211,7 @@ But you can also generate sessions for as other databases as needed.
 
 #### DatabaseInfo type
 
-The following type is exposed for your use:
+The following types are exposed for your use:
 
 ```typescript
 interface DatabaseInfo {
@@ -218,6 +220,17 @@ interface DatabaseInfo {
   PASSWORD: string;
   DATABASE?: string;
 }
+
+Session //bfrom the driver core
+Driver // from the driver core
+```
+
+So, for instance, you can hard-type an instance of a session as follows:
+
+```typescript
+import { getSession }  from 'neo-forte'
+const session: Session = await getSession()
+
 ```
 
 #### getSession()
