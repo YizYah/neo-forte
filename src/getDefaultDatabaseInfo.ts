@@ -1,16 +1,18 @@
+import { DatabaseInfo } from "./types/DatabaseInfo";
+
 require('dotenv').config()
 
-export function getDefaultDatabaseInfo() {
+export function getDefaultDatabaseInfo(): DatabaseInfo {
   const defaultUri = process.env.DB_URI;
   const defaultUser = process.env.DB_USER;
   const defaultPassword = process.env.DB_PASSWORD;
   const defaultDatabase = process.env.DB_DATABASE;
 
-  if (!('DB_URI' in process.env))
+  if (!defaultUri)
     throw new Error('No DB_URI environment variable found, and no databaseInfo provided');
-  if (!('DB_USER' in process.env))
+  if (!defaultUser)
     throw new Error('No DB_USER environment variable found, and no databaseInfo provided');
-  if (!('DB_PASSWORD' in process.env))
+  if (!defaultPassword)
     throw new Error('No DB_PASSWORD environment variable found, and no databaseInfo provided');
 
   return {

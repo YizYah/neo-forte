@@ -15,6 +15,7 @@
     "prepack": "rm -rf lib && tsc -b",
     "report": "nyc report --reporter=json",
     "test": "ava",
+    "update": "npm i neo4j-driver@latest neo4j-driver-core@latest",
     "view-coverage": "nyc --extension .ts ava --forbid-only"
   },
   "engines": {
