@@ -249,11 +249,9 @@ Takes an optional [DatabaseInfo](#databaseinfo-type) as its only parameter. If n
 Here's a sample usage relying upon the `.env` file to provide the needed database info:
 
 ```typescript
-import { getSession } from 'neo-forte'
+import { getSession, Session } from 'neo-forte'
 
 (()=> {
-  import { Session } from "neo4j-driver-core"
-
   const session: Session = getSession()
   console.log(`session=${JSON.stringify(session, null, 2)}`)
 })()
@@ -262,8 +260,7 @@ import { getSession } from 'neo-forte'
 Here's a usage where `databaseInfo` is set manually:
 
 ```typescript
-import { Session } from "neo4j-driver-core"
-import {DatabaseInfo, getSession} from 'neo-forte'
+import { getSession, DatabaseInfo, Session } from 'neo-forte'
 
 const databaseInfo:DatabaseInfo = {
   URI: 'neo4j+s://73ab4d76.databases.neo4j.io,
