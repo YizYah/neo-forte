@@ -193,7 +193,7 @@ See the [driver documentation](https://neo4j.com/docs/javascript-manual/4.3/sess
 
 ## API
 
-This package fundamentally does two things:
+This package fundamentally does 2 things:
 
 1. Creates a session
 2. Runs queries
