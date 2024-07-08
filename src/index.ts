@@ -1,6 +1,6 @@
 // types
 export * from './types/DatabaseInfo'
-export {Session, Driver} from 'neo4j-driver-core'
+export {Session, Driver, Config} from 'neo4j-driver-core'
 
 //functions
 export { getSession } from './getSession'

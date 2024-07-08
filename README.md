@@ -238,13 +238,22 @@ const session: Session = await getSession()
 Returns a session synchronously:
 
 ```typescript
-function getSession(databaseInfo?: DatabaseInfo): Session
+function getSession(databaseInfo?: DatabaseInfo, config?: Config): Session
 ```
 
-Takes an optional [DatabaseInfo](#databaseinfo-type) as its only parameter. If no value is passed for `databaseInfo`, here is what getSession does:
+Takes an optional [DatabaseInfo](#databaseinfo-type) as its first parameter. If no value is passed for `databaseInfo`, here is what getSession does:
 
 1. If there are `process.env` variables, then they are used by default and a session is returned;
 2. If not, an error is thrown.
+
+You can also optionally add a `Config` object for the driver. See the [neo4j driver documentation]{https://neo4j.com/docs/api/javascript-driver/current/class/lib6/types.js~Config.html} for more information.  For instance:
+
+```typescript
+const config: Config = {
+    maxConnectionPoolSize: 10, // Adjust based on your usage
+    connectionAcquisitionTimeout: 120000, // 2 minutes
+}
+```
 
 Here's a sample usage relying upon the `.env` file to provide the needed database info:
 
@@ -257,10 +266,15 @@ import { getSession, Session } from 'neo-forte'
 })()
 ```
 
-Here's a usage where `databaseInfo` is set manually:
+Here's a more complex usage. A config is used, and  `databaseInfo` is set manually:
 
 ```typescript
-import { getSession, DatabaseInfo, Session } from 'neo-forte'
+import { getSession, DatabaseInfo, Session, Config } from 'neo-forte'
+
+const config: Config = {
+    maxConnectionPoolSize: 10, // Adjust based on your usage
+    connectionAcquisitionTimeout: 120000, // 2 minutes
+}
 
 const databaseInfo:DatabaseInfo = {
   URI: 'neo4j+s://73ab4d76.databases.neo4j.io,
@@ -269,7 +283,7 @@ const databaseInfo:DatabaseInfo = {
 }
 
 (()=> {
-  const session: Session = getSession(databaseInfo)
+  const session: Session = getSession(databaseInfo, config)
   console.log(`session=${JSON.stringify(session, null, 2)}`)
 })()
 
