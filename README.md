@@ -291,7 +291,7 @@ const databaseInfo:DatabaseInfo = {
 
 #### getSessionVerify()
 
-An async version of `getSession` that also verifies your connection.  Everything else is the same.
+An async version of `getSession` that also verifies your connection.  Everything else is the same as `getSession`.
 
 ```typescript
 async function getSessionVerify(databaseInfo?: DatabaseInfo)
