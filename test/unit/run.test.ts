@@ -185,8 +185,8 @@ test('run() throws error string', async (t: any) => {
 
     })
 
-    const errorMessage = "problem calling the query: \n  \n  query:\n  -----------------\n  match (i:Instance {id:'cb71439d-8727-400a-aaf5-95cc2cad06f0'}) \nset i.value = $valueIn \nreturn i.value as value\n  -----------------   \n  params: {\"valueIn\":\"newValue\"}\n  \n  \n        -------------------\n        Here is the error reported: Error: the query set provided does not contain the given query:\n\nquery:\n-----------------\nmatch (i:Instance {id:'cb71439d-8727-400a-aaf5-95cc2cad06f0'}) \nset i.value = $valueIn \nreturn i.value as value\n-----------------   \nparams: {\"valueIn\":\"newValue\"}\n"
-
+    const errorMessage = "problem calling the query: \n  \n  query:\n  -----------------\n  match (i:Instance {id:'cb71439d-8727-400a-aaf5-95cc2cad06f0'...\n  -----------------   \n  params: {\"valueIn\":\"newValue\"}\n  \n  \n        -------------------\n        Here is the error reported: Error: the query set provided does not contain the given query:\n\nquery:\n-----------------\nmatch (i:Instance {id:'cb71439d-8727-400a-aaf5-95cc2cad06f0'}) \nset i.value = $valueIn \nreturn i.value as value\n-----------------   \nparams: {\"valueIn\":\"newValue\"}\n"
     t.is(error.message, errorMessage);
+
 })
 

@@ -5,13 +5,21 @@ export function truncatedParamString(params: any) {
   return paramsString
 }
 
+export function truncateQueryString(queryString: string): string {
+  const MAX_LENGTH = 60;
+  if (queryString.length > MAX_LENGTH) {
+    return queryString.substring(0, MAX_LENGTH) + '...';
+  }
+  return queryString;
+}
+
 export function queryForErrorString(queryString: string,
     params: any) {
     return `
   
   query:
   -----------------
-  ${queryString.trim()}
+  ${truncateQueryString(queryString.trim())}
   -----------------   
   params: ${truncatedParamString(params)}
   
