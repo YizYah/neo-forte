@@ -65,7 +65,7 @@ export async function run(
             summary
         }
     } catch (err) {
-        throw new Error(`problem converting to simple records the response to this query: : ${queryForErrorString}
+        throw new Error(`problem converting to simple records the response to this query: : ${queryForErrorString(queryString, params)}
         -------------------
         Here is the error reported: ${err}`);
     }

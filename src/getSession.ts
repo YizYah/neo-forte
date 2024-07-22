@@ -26,9 +26,9 @@ export function getSession(databaseInfo?: DatabaseInfo, config?: Config): Sessio
     config,
   )
 
-  if (finalDatabaseInfo && finalDatabaseInfo.DATABASE){
-    return driver.session({database: finalDatabaseInfo.DATABASE});
-  } 
+  if (finalDatabaseInfo && finalDatabaseInfo.DATABASE) {
+    return driver.session({ database: finalDatabaseInfo.DATABASE });
+  }
   return driver.session();
-  
+
 }
