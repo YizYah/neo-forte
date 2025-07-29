@@ -387,6 +387,73 @@ If no records are returned, `oneRecord` returns null.
 
 You cannot specify that you want to see a summary with `oneRecord`.  For that, you must call `run`.
 
+## Query Spec Generation for neo-forgery
+
+neo-forte can automatically generate query specs for use with [neo-forgery](https://github.com/YizYah/neo-forgery) to help you create unit tests from integration tests.
+
+### How it works
+
+When you set the `QUERY_SPECS_FILE` environment variable to a file path, neo-forte will automatically capture all queries, their parameters, and results, and write them to a TypeScript file in the format expected by neo-forgery.
+
+### Usage
+
+1. Set the environment variable:
+   ```bash
+   export QUERY_SPECS_FILE=./query-specs.ts
+   ```
+
+2. Run your integration tests or application. Every call to `run()` or `oneRecord()` will be captured.
+
+3. Import the generated specs in your unit tests:
+   ```typescript
+   import { generatedQuerySpecs } from './query-specs';
+   import { mockSessionFromQuerySet } from 'neo-forgery';
+   
+   const session = mockSessionFromQuerySet(generatedQuerySpecs);
+   // Now use this session in your unit tests
+   ```
+
+### Example
+
+```typescript
+// Your integration test
+import { getSession, run } from 'neo-forte';
+
+// Set QUERY_SPECS_FILE=./my-query-specs.ts before running this
+const session = getSession();
+const result = await run(
+  session, 
+  'MATCH (n:Person {name: $name}) RETURN n.age as age',
+  { name: 'John' }
+);
+```
+
+This will generate a file `my-query-specs.ts` containing:
+
+```typescript
+import { QuerySpec } from 'neo-forgery';
+
+export const generatedQuerySpecs: QuerySpec[] = [
+  {
+    name: 'generated_spec_1234567890',
+    query: `MATCH (n:Person {name: $name}) RETURN n.age as age`,
+    params: {
+      "name": "John"
+    },
+    output: {
+      // ... actual query results from your database
+    }
+  }
+];
+```
+
+### Benefits
+
+- **Instant Unit Tests**: Convert integration tests to unit tests with one run
+- **Real Data**: Query specs contain actual database responses
+- **No Manual Setup**: Eliminates the tedious process of manually creating query specs
+- **Multiple Queries**: Automatically appends to the file for multiple queries
+
 ## Limitations
 
 There are use cases where you'll be best served to call the [neo4j driver](https://github.com/neo4j/neo4j-javascript-driver#readme) directly. The driver is complex for a reason--it's very versatile.
