@@ -2,6 +2,7 @@ import Session from 'neo4j-driver-core/types/session';
 import { liveToData } from 'neo-forgery';
 import { queryForErrorString } from './queryForErrorString';
 import { Format, TransactionType } from './types/settings';
+import { writeQuerySpec } from './querySpecWriter';
 
 const updateClauses = [
     'CREATE',
@@ -56,6 +57,18 @@ export async function run(
 
     try {
         const records = liveToData(result)
+        
+        // Generate query spec if QUERY_SPECS_FILE environment variable is set
+        if (process.env.QUERY_SPECS_FILE) {
+            const querySpecData = {
+                name: 'generated_spec',
+                query: queryString,
+                params: params,
+                output: result
+            };
+            writeQuerySpec(process.env.QUERY_SPECS_FILE, querySpecData);
+        }
+        
         if (format === Format.DataOnly) {
             return records
         }
